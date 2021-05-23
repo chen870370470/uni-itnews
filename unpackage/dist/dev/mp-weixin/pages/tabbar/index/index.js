@@ -184,7 +184,6 @@ var _default =
   },
   methods: {
     getLabel: function getLabel() {var _this = this;
-      console.log(this.$api);
       this.$api.get_label().then(function (res) {var
 
         data =
@@ -193,7 +192,6 @@ var _default =
       });
     },
     tab: function tab(data) {
-      console.log(data);
     } } };exports.default = _default;
 
 /***/ }),

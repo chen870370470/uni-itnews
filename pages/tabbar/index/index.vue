@@ -2,11 +2,11 @@
 	<view class="home">
 		<!-- 自定义导航栏 -->
 		<navbar></navbar>
-
 		<tab :list="tabList" @tab="tab"></tab>
-		<view>
+		<view class="home-list">
 			<list></list>
 		</view>
+		
 	</view>
 </template>
 
@@ -23,7 +23,6 @@
 		},
 		methods: {
 			getLabel() {
-				console.log(this.$api);
 				this.$api.get_label().then((res) => {
 					const {
 						data
@@ -32,7 +31,6 @@
 				})
 			},
 			tab(data) {
-				console.log(data);
 			}
 		}
 	}
@@ -48,7 +46,11 @@
 		display: flex;
 		flex-direction: column;
 		flex: 1;
-		border: 1px red solid;
 		overflow: hidden;
+		.home-list {
+			flex: 1;
+			box-sizing: border-box;
+			border: 1px red solid;
+		}
 	}
 </style>

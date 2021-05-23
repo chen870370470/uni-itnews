@@ -1,28 +1,28 @@
 <template>
 	<swiper class="home-swiper">
-		<swiper-item>
-			<list-scroll>
-				<list-card mode="base"></list-card>
-				<list-card mode="image"></list-card>
-				<list-card mode="column"></list-card>
-				<list-card mode="column"></list-card>
-				<list-card mode="column"></list-card>
-				<list-card mode="column"></list-card>
-				<list-card mode="column"></list-card>
-				<list-card mode="column"></list-card>
-				<list-card mode="column"></list-card>
-			</list-scroll>
+		<swiper-item class="swiper-item">
+			<list-item></list-item>
+		</swiper-item>
+		<swiper-item class="swiper-item">
+			<list-item></list-item>
+		</swiper-item>
+		<swiper-item class="swiper-item">
+			<list-item></list-item>
 		</swiper-item>
 
 	</swiper>
 </template>
 
 <script>
+	import listItem from './list-item.vue'
 	export default {
-		name:"list",
+		name: "list",
+		components:{
+			listItem
+		},
 		data() {
 			return {
-				
+
 			};
 		}
 	}
@@ -31,5 +31,12 @@
 <style lang="scss">
 	.home-swiper {
 		height: 100%;
+		.swiper-item {
+			height: 100%;
+			overflow: hidden;
+			.list-scroll {
+				height: 100%;
+			}
+		}
 	}
 </style>
