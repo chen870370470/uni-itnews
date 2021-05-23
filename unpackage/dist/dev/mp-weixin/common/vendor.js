@@ -2068,7 +2068,7 @@ webpackContext.id = 12;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.get_list = exports.get_label = void 0;var _http = _interopRequireDefault(__webpack_require__(/*! ../http.js */ 14));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+Object.defineProperty(exports, "__esModule", { value: true });exports.update_likes = exports.get_list = exports.get_label = void 0;var _http = _interopRequireDefault(__webpack_require__(/*! ../http.js */ 14));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 var get_label = function get_label(data) {
   return (0, _http.default)({
     url: 'get_label',
@@ -2081,6 +2081,12 @@ var get_list = function get_list(data) {
     data: data });
 
 };exports.get_list = get_list;
+var update_likes = function update_likes(data) {
+  return (0, _http.default)({
+    url: 'update_likes',
+    data: data });
+
+};exports.update_likes = update_likes;
 
 /***/ }),
 
@@ -2092,15 +2098,19 @@ var get_list = function get_list(data) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uniCloud) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = $http;function $http(options) {var
+/* WEBPACK VAR INJECTION */(function(uniCloud) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = $http;function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}function $http(options) {var
 
   url =
 
   options.url,data = options.data;
+  var dataObj = _objectSpread({
+    user_id: '60a27cb24b9480000118e97f' },
+  data);
+
   return new Promise(function (resolve, reject) {
     uniCloud.callFunction({
       name: url,
-      data: data }).
+      data: dataObj }).
     then(function (res) {
       if (res.result.code === 200) {
         //  .then

@@ -67,7 +67,7 @@
 						loading: 'loading'
 					}
 				}
-				console.log(this.load[current].page);
+				// console.log(this.load[current].page);
 				this.$api.get_list({
 					name: this.tab[current].name,
 					page: this.load[current].page,
@@ -76,6 +76,7 @@
 					const {
 						data
 					} = res
+					// console.log(data);
 					if (data.length === 0) {
 						let oldLoad = {}
 						oldLoad.loading = 'noMore'
