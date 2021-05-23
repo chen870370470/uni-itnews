@@ -114,13 +114,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var listItem = function listItem() {__webpack_require__.e(/*! require.ensure | components/list/list-item */ "components/list/list-item").then((function () {return resolve(__webpack_require__(/*! ./list-item.vue */ 94));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
-
-
-
-
-
-
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var listItem = function listItem() {__webpack_require__.e(/*! require.ensure | components/list/list-item */ "components/list/list-item").then((function () {return resolve(__webpack_require__(/*! ./list-item.vue */ 94));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default2 =
 
 
 
@@ -133,14 +127,58 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 {
   name: "list",
+  props: {
+    tab: {
+      type: Array,
+      default: function _default() {
+        return [];
+      } },
+
+    activeIndex: {
+      type: Number,
+      default: 0 } },
+
+
   components: {
     listItem: listItem },
 
   data: function data() {
-    return {};
+    return {
+      list: [],
+      listCatchData: {} };
 
+  },
+  watch: {
+    tab: function tab(newVal) {
+      if (newVal.length === 0) return;
+      this.getList(this.activeIndex);
+    } },
 
-  } };exports.default = _default;
+  // onLoad 在页面 ， created 在组件中
+  created: function created() {
+    // tab还没有赋值
+  },
+  methods: {
+    change: function change(e) {var
+
+      current =
+      e.detail.current;
+      this.getList(current);
+      this.$emit('change', current);
+    },
+    getList: function getList(current) {var _this = this;
+      this.$api.get_list({
+        name: this.tab[current].name }).
+      then(function (res) {var
+
+        data =
+        res.data;
+        // this.list = data
+        // this.listCatchData[current] = data
+        // 数据懒加载
+        _this.$set(_this.listCatchData, current, data);
+      });
+    } } };exports.default = _default2;
 
 /***/ }),
 

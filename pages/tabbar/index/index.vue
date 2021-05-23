@@ -2,9 +2,9 @@
 	<view class="home">
 		<!-- 自定义导航栏 -->
 		<navbar></navbar>
-		<tab :list="tabList" @tab="tab"></tab>
+		<tab :list="tabList" :tabIndex="tabIndex"  @tab="tab"></tab>
 		<view class="home-list">
-			<list></list>
+			<list :tab="tabList" :activeIndex="activeIndex" @change="change"></list>
 		</view>
 		
 	</view>
@@ -15,7 +15,9 @@
 		data() {
 			return {
 				title: 'Hello',
-				tabList: []
+				tabList: [],
+				tabIndex:0,
+				activeIndex:0
 			}
 		},
 		onLoad() {
@@ -31,6 +33,10 @@
 				})
 			},
 			tab(data) {
+				this.activeIndex = data.index
+			},
+			change(current){
+				this.tabIndex = current
 			}
 		}
 	}
@@ -50,7 +56,6 @@
 		.home-list {
 			flex: 1;
 			box-sizing: border-box;
-			border: 1px red solid;
 		}
 	}
 </style>

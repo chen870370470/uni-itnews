@@ -176,7 +176,9 @@ var _default =
   data: function data() {
     return {
       title: 'Hello',
-      tabList: [] };
+      tabList: [],
+      tabIndex: 0,
+      activeIndex: 0 };
 
   },
   onLoad: function onLoad() {
@@ -192,6 +194,10 @@ var _default =
       });
     },
     tab: function tab(data) {
+      this.activeIndex = data.index;
+    },
+    change: function change(current) {
+      this.tabIndex = current;
     } } };exports.default = _default;
 
 /***/ }),

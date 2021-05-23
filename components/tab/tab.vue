@@ -22,6 +22,16 @@
 				default () {
 					return []
 				}
+			},
+			tabIndex: {
+				tyep: Number,
+				default: 0
+			}
+		},
+		// 监听data、props中值的变化
+		watch:{
+			tabIndex(newVal,oldVal){
+				this.activeIndex = newVal
 			}
 		},
 		data() {

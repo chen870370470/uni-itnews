@@ -160,8 +160,18 @@ var _default2 =
       type: Array,
       default: function _default() {
         return [];
-      } } },
+      } },
 
+    tabIndex: {
+      tyep: Number,
+      default: 0 } },
+
+
+  // 监听data、props中值的变化
+  watch: {
+    tabIndex: function tabIndex(newVal, oldVal) {
+      this.activeIndex = newVal;
+    } },
 
   data: function data() {
     return {
