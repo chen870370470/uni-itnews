@@ -114,7 +114,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var listItem = function listItem() {__webpack_require__.e(/*! require.ensure | components/list/list-item */ "components/list/list-item").then((function () {return resolve(__webpack_require__(/*! ./list-item.vue */ 94));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default2 =
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;function _toConsumableArray(arr) {return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();}function _nonIterableSpread() {throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");}function _unsupportedIterableToArray(o, minLen) {if (!o) return;if (typeof o === "string") return _arrayLikeToArray(o, minLen);var n = Object.prototype.toString.call(o).slice(8, -1);if (n === "Object" && o.constructor) n = o.constructor.name;if (n === "Map" || n === "Set") return Array.from(o);if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);}function _iterableToArray(iter) {if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);}function _arrayWithoutHoles(arr) {if (Array.isArray(arr)) return _arrayLikeToArray(arr);}function _arrayLikeToArray(arr, len) {if (len == null || len > arr.length) len = arr.length;for (var i = 0, arr2 = new Array(len); i < len; i++) {arr2[i] = arr[i];}return arr2;}var listItem = function listItem() {__webpack_require__.e(/*! require.ensure | components/list/list-item */ "components/list/list-item").then((function () {return resolve(__webpack_require__(/*! ./list-item.vue */ 94));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default2 =
 
 
 
@@ -145,7 +145,9 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
   data: function data() {
     return {
       list: [],
-      listCatchData: {} };
+      listCatchData: {},
+      load: {},
+      pageSize: 10 };
 
   },
   watch: {
@@ -159,24 +161,50 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
     // tab还没有赋值
   },
   methods: {
+    loadmore: function loadmore() {
+      if (this.load[this.activeIndex].loading === 'noMore') return;
+      this.load[this.activeIndex].page++;
+      this.getList(this.activeIndex);
+    },
     change: function change(e) {var
 
       current =
       e.detail.current;
-      this.getList(current);
       this.$emit('change', current);
+      // 当数据不存在或者长度是0的情况下才去请求数据
+      if (!this.listCatchData[current] || this.listCatchData[current].length === 0) {
+        this.getList(current);
+      }
     },
     getList: function getList(current) {var _this = this;
+      if (!this.load[current]) {
+        this.load[current] = {
+          page: 1,
+          loading: 'loading' };
+
+      }
+      console.log(this.load[current].page);
       this.$api.get_list({
-        name: this.tab[current].name }).
+        name: this.tab[current].name,
+        page: this.load[current].page,
+        pageSize: this.pageSize }).
       then(function (res) {var
 
         data =
         res.data;
-        // this.list = data
-        // this.listCatchData[current] = data
+        if (data.length === 0) {
+          var oldLoad = {};
+          oldLoad.loading = 'noMore';
+          oldLoad.page = _this.load[current].page;
+          _this.$set(_this.load, current, oldLoad);
+          // 强制渲染页面
+          _this.$forceUpdate();
+          return;
+        }
+        var oldList = _this.listCatchData[current] || [];
+        oldList.push.apply(oldList, _toConsumableArray(data));
         // 数据懒加载
-        _this.$set(_this.listCatchData, current, data);
+        _this.$set(_this.listCatchData, current, oldList);
       });
     } } };exports.default = _default2;
 

@@ -97,6 +97,9 @@ try {
     },
     listCard: function() {
       return __webpack_require__.e(/*! import() | components/list-card/list-card */ "components/list-card/list-card").then(__webpack_require__.bind(null, /*! @/components/list-card/list-card.vue */ 64))
+    },
+    uniLoadMore: function() {
+      return __webpack_require__.e(/*! import() | uni_modules/uni-load-more/components/uni-load-more/uni-load-more */ "uni_modules/uni-load-more/components/uni-load-more/uni-load-more").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-load-more/components/uni-load-more/uni-load-more.vue */ 102))
     }
   }
 } catch (e) {
@@ -159,6 +162,8 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 //
 //
 //
+//
+//
 var _default2 =
 {
   props: {
@@ -166,7 +171,21 @@ var _default2 =
       type: Array,
       default: function _default() {
         return [];
-      } } } };exports.default = _default2;
+      } },
+
+    load: {
+      type: Object,
+      default: function _default() {
+        return {
+          loading: 'loading' };
+
+      } } },
+
+
+  methods: {
+    loadmore: function loadmore() {
+      this.$emit('loadmore');
+    } } };exports.default = _default2;
 
 /***/ }),
 

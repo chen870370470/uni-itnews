@@ -29,6 +29,9 @@
 					const {
 						data
 					} = res
+					data.unshift({
+						name:'全部'
+					})
 					this.tabList = data
 				})
 			},
@@ -37,6 +40,7 @@
 			},
 			change(current){
 				this.tabIndex = current
+				this.activeIndex = current
 			}
 		}
 	}

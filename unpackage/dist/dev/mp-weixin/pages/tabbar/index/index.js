@@ -190,6 +190,9 @@ var _default =
 
         data =
         res.data;
+        data.unshift({
+          name: '全部' });
+
         _this.tabList = data;
       });
     },
@@ -198,6 +201,7 @@ var _default =
     },
     change: function change(current) {
       this.tabIndex = current;
+      this.activeIndex = current;
     } } };exports.default = _default;
 
 /***/ }),

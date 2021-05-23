@@ -1,7 +1,7 @@
 <template>
 	<swiper class="home-swiper" :current="activeIndex" @change="change">
 		<swiper-item class="swiper-item" v-for="(item,index) in tab" :key="index">
-			<list-item :list="listCatchData[index]"></list-item>
+			<list-item :list="listCatchData[index]" :load="load[index]" @loadmore="loadmore"></list-item>
 		</swiper-item>
 
 	</swiper>
@@ -29,7 +29,9 @@
 		data() {
 			return {
 				list: [],
-				listCatchData: {}
+				listCatchData: {},
+				load: {},
+				pageSize: 10
 			};
 		},
 		watch: {
@@ -43,24 +45,50 @@
 			// tab还没有赋值
 		},
 		methods: {
+			loadmore() {
+				if (this.load[this.activeIndex].loading === 'noMore') return
+				this.load[this.activeIndex].page++
+				this.getList(this.activeIndex)
+			},
 			change(e) {
 				const {
 					current
 				} = e.detail
-				this.getList(current)
 				this.$emit('change', current)
+				// 当数据不存在或者长度是0的情况下才去请求数据
+				if (!this.listCatchData[current] || this.listCatchData[current].length === 0) {
+					this.getList(current)
+				}
 			},
 			getList(current) {
+				if (!this.load[current]) {
+					this.load[current] = {
+						page: 1,
+						loading: 'loading'
+					}
+				}
+				console.log(this.load[current].page);
 				this.$api.get_list({
-					name: this.tab[current].name
+					name: this.tab[current].name,
+					page: this.load[current].page,
+					pageSize: this.pageSize
 				}).then(res => {
 					const {
 						data
 					} = res
-					// this.list = data
-					// this.listCatchData[current] = data
+					if (data.length === 0) {
+						let oldLoad = {}
+						oldLoad.loading = 'noMore'
+						oldLoad.page = this.load[current].page
+						this.$set(this.load, current, oldLoad)
+						// 强制渲染页面
+						this.$forceUpdate()
+						return
+					}
+					let oldList = this.listCatchData[current] || []
+					oldList.push(...data)
 					// 数据懒加载
-					this.$set(this.listCatchData,current,data)
+					this.$set(this.listCatchData, current, oldList)
 				})
 			}
 		}
