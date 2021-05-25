@@ -80,7 +80,7 @@ var components
 try {
   components = {
     uniIcons: function() {
-      return Promise.all(/*! import() | uni_modules/uni-icons/components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uni-icons/components/uni-icons/uni-icons")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uni-icons/components/uni-icons/uni-icons.vue */ 71))
+      return Promise.all(/*! import() | uni_modules/uni-icons/components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uni-icons/components/uni-icons/uni-icons")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uni-icons/components/uni-icons/uni-icons.vue */ 64))
     }
   }
 } catch (e) {
@@ -157,9 +157,24 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 var _default =
 {
   name: "navbar",
+  props: {
+    isSearch: {
+      type: Boolean,
+      default: false } },
+
+
   data: function data() {
     return {
       statusBarHeight: 20,
@@ -181,7 +196,14 @@ var _default =
     statusBarHeight);
     this.windowWidth = menuButtonInfo.left;
 
-  } };exports.default = _default;
+  },
+  methods: {
+    open: function open() {
+      if (this.isSearch) return;
+      uni.navigateTo({
+        url: "/pages/home-search/home-search" });
+
+    } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
