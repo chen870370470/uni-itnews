@@ -179,7 +179,8 @@ var _default =
     return {
       statusBarHeight: 20,
       navBarHeight: 45,
-      windowWidth: 375 };
+      windowWidth: 375,
+      val: '' };
 
   },
   created: function created() {
@@ -203,6 +204,11 @@ var _default =
       uni.navigateTo({
         url: "/pages/home-search/home-search" });
 
+    },
+    inputChange: function inputChange() {
+      // const {value} = e.detail
+      // console.log(value);
+      this.$emit('input', this.val);
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
