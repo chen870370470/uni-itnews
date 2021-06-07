@@ -8,6 +8,6 @@ App.mpType = 'app'
 
 const app = new Vue({
     ...App,
-	...store
+	store
 })
 app.$mount()

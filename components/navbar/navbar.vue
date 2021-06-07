@@ -7,10 +7,10 @@
 			<!-- 导航栏内容 -->
 			<view class="navbar-content" :class="{search:isSearch}"
 				:style="{height: navBarHeight + 'px', width: windowWidth + 'px'}" @click.stop="open">
-				<view class="navbar-content_search-icons">
+				<view v-if="isSearch" class="navbar-content_search-icons" @click="back">
 					<uni-icons type="back" size="22" color="#fff"></uni-icons>
 				</view>
-				<view v-if="!isSearch" class="navbar-search">
+				<view v-if="!isSearch" class="navbar-search" >
 					<!-- 非搜索页显示 -->
 					<view class="navbar-search_icon">
 						<uni-icons type="search" size="16" color="#999"></uni-icons>
@@ -31,6 +31,10 @@
 	export default {
 		name: "navbar",
 		props: {
+			value:{
+				type:[String,Number],
+				default:''
+			},
 			isSearch: {
 				type: Boolean,
 				default: false
@@ -43,6 +47,11 @@
 				windowWidth: 375,
 				val:''
 			};
+		},
+		watch:{
+			value(newVal){
+				this.val = newVal
+			}
 		},
 		created() {
 			// 获取手机系统信息
@@ -60,6 +69,11 @@
 			// #endif
 		},
 		methods: {
+			back(){
+				uni.switchTab({
+					url:'/pages/tabbar/index/index'
+				})
+			},
 			open() {
 				if(this.isSearch) return
 				uni.navigateTo({
@@ -109,6 +123,7 @@
 					}
 
 					.navbar-search_text {
+						width: 100%;
 						font-size: 14px;
 						color: #999999;
 					}
