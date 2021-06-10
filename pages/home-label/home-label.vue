@@ -63,6 +63,7 @@
 				if (!this.is_edit) return
 				this.labelList.push(this.list[index])
 				this.list.splice(index, 1)
+				console.log('2');
 			}
 		}
 	}
