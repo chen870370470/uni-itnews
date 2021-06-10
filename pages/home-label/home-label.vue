@@ -57,6 +57,7 @@
 			del(index) {
 				this.list.push(this.labelList[index])
 				this.labelList.splice(index, 1)
+				console.log('1');
 			},
 			add(index) {
 				if (!this.is_edit) return
