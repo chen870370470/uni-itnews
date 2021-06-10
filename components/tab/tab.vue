@@ -8,7 +8,7 @@
 			</view>
 		</scroll-view>
 		<view class="tab-icons">
-			<uni-icons type="gear" size="26" color="#666"></uni-icons>
+			<uni-icons type="gear" size="26" color="#666" @click="open"></uni-icons>
 		</view>
 	</view>
 </template>
@@ -40,6 +40,11 @@
 			};
 		},
 		methods: {
+			open(){
+				uni.navigateTo({
+					url:"/pages/home-label/home-label"
+				})
+			},
 			clickTab(item, index) {
 				this.activeIndex = index
 				this.$emit('tab', {
