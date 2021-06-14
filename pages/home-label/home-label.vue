@@ -40,13 +40,18 @@
 		},
 		methods: {
 			editlabel() {
-				this.is_edit = !this.is_edit
+				// true 正在编辑
+				if (this.is_edit) {
+					this.is_edit = false
+					this.setUpdateLabel(this.labelList)
+				} else {
+					this.is_edit = true
+				}
 			},
 			getLabel() {
 				this.$api.get_label({
 					type: 'all'
 				}).then((res) => {
-					console.log(res);
 					const {
 						data
 					} = res
@@ -57,13 +62,27 @@
 			del(index) {
 				this.list.push(this.labelList[index])
 				this.labelList.splice(index, 1)
-				console.log('1');
 			},
 			add(index) {
 				if (!this.is_edit) return
 				this.labelList.push(this.list[index])
 				this.list.splice(index, 1)
-				console.log('2');
+			},
+			setUpdateLabel(label) {
+				let newArrIds = []
+				label.forEach(item => {
+					newArrIds.push(item._id)
+				})
+				uni.showLoading()
+				this.$api.update_label({
+					label: newArrIds
+				}).then((res) => {
+					uni.hideLoading()
+					uni.showToast({
+						title:"更新成功",
+						icon:'none'
+					})
+				})
 			}
 		}
 	}
