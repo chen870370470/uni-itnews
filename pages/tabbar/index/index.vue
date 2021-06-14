@@ -2,11 +2,11 @@
 	<view class="home">
 		<!-- 自定义导航栏 -->
 		<navbar></navbar>
-		<tab :list="tabList" :tabIndex="tabIndex"  @tab="tab"></tab>
+		<tab :list="tabList" :tabIndex="tabIndex" @tab="tab"></tab>
 		<view class="home-list">
 			<list :tab="tabList" :activeIndex="activeIndex" @change="change"></list>
 		</view>
-		
+
 	</view>
 </template>
 
@@ -16,12 +16,19 @@
 			return {
 				title: 'Hello',
 				tabList: [],
-				tabIndex:0,
-				activeIndex:0
+				tabIndex: 0,
+				activeIndex: 0
 			}
 		},
 		onLoad() {
 			this.getLabel()
+			uni.$on('labelChange', (res) => {
+				this.tabList = []
+				this.tabIndex = 0
+				this.activeIndex = 0
+				this.getLabel()
+			})
+			
 		},
 		methods: {
 			getLabel() {
@@ -30,7 +37,7 @@
 						data
 					} = res
 					data.unshift({
-						name:'全部'
+						name: '全部'
 					})
 					this.tabList = data
 				})
@@ -38,7 +45,7 @@
 			tab(data) {
 				this.activeIndex = data.index
 			},
-			change(current){
+			change(current) {
 				this.tabIndex = current
 				this.activeIndex = current
 			}
@@ -57,6 +64,7 @@
 		flex-direction: column;
 		flex: 1;
 		overflow: hidden;
+
 		.home-list {
 			flex: 1;
 			box-sizing: border-box;

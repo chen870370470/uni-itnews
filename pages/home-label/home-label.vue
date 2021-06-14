@@ -5,11 +5,15 @@
 				<view class="label-title">我的标签</view>
 				<view class="label-edit" @click="editlabel">{{is_edit ? '完成' : '编辑'}}</view>
 			</view>
-			<view class="label-content">
+			<uni-load-more v-if="loading" status="loading" iconType="snow"></uni-load-more>
+			<view v-if="!loading" class="label-content">
 				<view class="label-content__item" v-for="(item,index) in labelList" :key=item._id>
 					{{item.name}}
 					<uni-icons class="icons-close" v-if="is_edit" type="clear" size="20" color="red"
 						@click="del(index)"></uni-icons>
+				</view>
+				<view v-if="labelList.length === 0 && !loading" class="no-data">
+					当前没有数据
 				</view>
 			</view>
 		</view>
@@ -17,9 +21,13 @@
 			<view class="label-header">
 				<view class="label-title">标签推荐</view>
 			</view>
-			<view class="label-content">
+			<uni-load-more v-if="loading" status="loading" iconType="snow"></uni-load-more>
+			<view v-if="!loading" class="label-content">
 				<view class="label-content__item" v-for="(item,index) in list" :key=item._id @click="add(index)">
 					{{item.name}}
+				</view>
+				<view v-if="list.length === 0 && !loading" class="no-data">
+					当前没有数据
 				</view>
 			</view>
 		</view>
@@ -32,10 +40,14 @@
 			return {
 				is_edit: false,
 				labelList: [],
-				list: []
+				list: [],
+				loading: true
 			};
 		},
 		onLoad() {
+			// 自定义事件
+			// this.$emit()  uni.$emit()
+			// 自定义事件，只能在打开的页面触发
 			this.getLabel()
 		},
 		methods: {
@@ -49,6 +61,7 @@
 				}
 			},
 			getLabel() {
+				this.loading = true
 				this.$api.get_label({
 					type: 'all'
 				}).then((res) => {
@@ -57,6 +70,7 @@
 					} = res
 					this.labelList = data.filter(item => item.current)
 					this.list = data.filter(item => !item.current)
+					this.loading = false
 				})
 			},
 			del(index) {
@@ -79,9 +93,10 @@
 				}).then((res) => {
 					uni.hideLoading()
 					uni.showToast({
-						title:"更新成功",
-						icon:'none'
+						title: "更新成功",
+						icon: 'none'
 					})
+					uni.$emit('labelChange')
 				})
 			}
 		}
@@ -139,5 +154,13 @@
 				}
 			}
 		}
+	}
+
+	.no-data {
+		width: 100%;
+		text-align: center;
+		padding: 50px 0;
+		color: #999;
+		font-size: 14px
 	}
 </style>
