@@ -21,7 +21,7 @@
 
 		<view class="detail-content">
 			<view class="detail-html">
-				{{formData.content}}
+				<u-parse :content="formData.content" :noData="noData"></u-parse>
 			</view>
 		</view>
 		<view class="detail-bottom">
@@ -45,10 +45,15 @@
 </template>
 
 <script>
+	import uParse from '@/components/gaoyia-parse/parse.vue'
 	export default {
+		components: {
+			uParse
+		},
 		data() {
 			return {
-				formData: {}
+				formData: {},
+				noData: '<p style="text-align:center;color:#666">详情加载中...</p>'
 			}
 		},
 		onLoad(query) {
@@ -57,11 +62,13 @@
 		},
 		methods: {
 			// 获取详情信息
-			getDetail(){
+			getDetail() {
 				this.$api.get_detail({
-					article_id:this.formData._id
-				}).then((res)=> {
-					const {data} = res
+					article_id: this.formData._id
+				}).then((res) => {
+					const {
+						data
+					} = res
 					this.formData = data
 					console.log(res);
 				})
@@ -128,9 +135,10 @@
 	.detail-content {
 		margin-top: 20px;
 		min-height: 500px;
+
 		.detail-html {
 			padding: 0 15px;
-			
+
 		}
 	}
 
