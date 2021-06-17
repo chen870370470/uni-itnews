@@ -25,7 +25,7 @@
 			</view>
 		</view>
 		<view class="detail-bottom">
-			<view class="detail-bottom__input">
+			<view class="detail-bottom__input" @click="openComment">
 				<text>谈谈你的看法</text>
 				<uni-icons type="compose" size="16" color="#f07373"></uni-icons>
 			</view>
@@ -41,6 +41,21 @@
 				</view>
 			</view>
 		</view>
+		<uni-popup ref="popup" type="bottom" :maskClick="false">
+			<view class="popup-wrap">
+				<view class="popup-header">
+					<text class="popup-header__item" @click="close">取消</text>
+					<text class="popup-header__item" @click="submit">发布</text>
+				</view>
+				<view class="popup-content">
+					<textarea class="popup-textarea" v-model="commentsValue" maxlength="200" fixed="true"
+						placeholder="请输入评论内容" />
+					<view class="popup-count">
+						{{commentsValue.length}}/200
+					</view>
+				</view>
+			</view>
+		</uni-popup>
 	</view>
 </template>
 
@@ -53,14 +68,30 @@
 		data() {
 			return {
 				formData: {},
-				noData: '<p style="text-align:center;color:#666">详情加载中...</p>'
+				noData: '<p style="text-align:center;color:#666">详情加载中...</p>',
+				// 输入框的值
+				commentsValue: ''
 			}
 		},
 		onLoad(query) {
 			this.formData = JSON.parse(query.params)
 			this.getDetail()
 		},
+		onReady() {},
 		methods: {
+			// 打开评论发布窗口
+			openComment() {
+				this.$refs.popup.open()
+			},
+			// 关闭弹窗
+			close(){
+				this.$refs.popup.close()
+			},
+			// 发布弹窗
+			submit(){
+				console.log('发布');
+				this.$refs.popup.close()
+			},
 			// 获取详情信息
 			getDetail() {
 				this.$api.get_detail({
@@ -182,6 +213,42 @@
 				align-items: center;
 				justify-content: center;
 				width: 44px;
+			}
+		}
+	}
+
+	.popup-wrap {
+		background-color: #FFFFFF;
+
+		.popup-header {
+			display: flex;
+			justify-content: space-between;
+			font-size: 14px;
+			color: #666;
+			border-bottom: 1px #F5F5F5 solid;
+
+			.popup-header__item {
+				height: 50px;
+				line-height: 50px;
+				padding: 0 15px;
+			}
+		}
+
+		.popup-content {
+			width: 100%;
+			padding: 15px;
+			box-sizing: border-box;
+
+			.popup-textarea {
+				width: 100%;
+				height: 200px;
+			}
+
+			.popup-count {
+				display: flex;
+				justify-content: flex-end;
+				font-size: 12px;
+				color: #999999;
 			}
 		}
 	}
