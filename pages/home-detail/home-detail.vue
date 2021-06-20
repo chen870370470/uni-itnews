@@ -21,7 +21,14 @@
 
 		<view class="detail-content">
 			<view class="detail-html">
-				<u-parse :content="formData.content" :noData="noData"></u-parse>
+				<!-- <u-parse :content="formData.content" :noData="noData"></u-parse> -->
+				内容
+			</view>
+			<view class="detail-comment">
+				<view class="comment-title">最新评论</view>
+				<view class="comment-content">
+					<comments-box></comments-box>
+				</view>
 			</view>
 		</view>
 		<view class="detail-bottom">
@@ -84,13 +91,36 @@
 				this.$refs.popup.open()
 			},
 			// 关闭弹窗
-			close(){
+			close() {
 				this.$refs.popup.close()
 			},
 			// 发布弹窗
-			submit(){
+			submit() {
 				console.log('发布');
-				this.$refs.popup.close()
+				if (!this.commentsValue) {
+					uni.showToast({
+						title: '请输入评论内容',
+						icon: 'none'
+					})
+					return
+				}
+				this.setUpdateComment(this.commentsValue)
+			},
+			setUpdateComment(content) {
+				uni.showLoading()
+				this.$api.update_comment({
+					article_id: this.formData._id,
+					content
+				}).then((res) => {
+					console.log(res);
+					uni.hideLoading()
+					uni.showToast({
+						title: '发布成功',
+						icon: 'none'
+					})
+					this.close()
+
+				})
 			},
 			// 获取详情信息
 			getDetail() {
@@ -169,7 +199,22 @@
 
 		.detail-html {
 			padding: 0 15px;
+		}
 
+		.detail-comment {
+			margin-top: 30px;
+
+			.comment-title {
+				padding: 10px 15px;
+				font-size: 14px;
+				color: #666;
+				border-bottom: 1px #F5F5F5 solid;
+			}
+
+			.comment-content {
+				padding: 0 15px;
+				border-top: 1px #eeeeee solid;
+			}
 		}
 	}
 
