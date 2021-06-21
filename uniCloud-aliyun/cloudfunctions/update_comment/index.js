@@ -11,7 +11,9 @@ exports.main = async (event, context) => {
 		// 文章id
 		article_id,
 		// 评论内容
-		content
+		content,
+		// 评论id
+		comment_id = ''
 	} = event
 
 	let user = await db.collection('user').doc(user_id).get()
@@ -35,9 +37,15 @@ exports.main = async (event, context) => {
 		// 回复字段
 		replys: []
 	}
-	
+	// 评论文章
+	if(comment_id === ''){
+		commentObj.replys = []
+		commentObj = dbCmd.unshift(commentObj)
+	} else {
+		// 回复对文章的评论
+	}
 	await db.collection('article').doc(article_id).update({
-		comments:dbCmd.unshift(commentObj)
+		comments:commentObj
 	})
 
 	//返回数据给客户端
