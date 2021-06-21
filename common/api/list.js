@@ -43,3 +43,9 @@ export const update_comment = (data) => {
 		data
 	})
 }
+export const get_comments = (data) => {
+	return $http({
+		url:'get_comments',
+		data
+	})
+}

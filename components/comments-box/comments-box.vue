@@ -2,18 +2,18 @@
 	<view class="comments-box">
 		<view class="comments-header">
 			<view class="comments-header__logo">
-				<image src="../../static/logo.png" mode="aspectFill"></image>
+				<image :src="comments.author.avatar" mode="aspectFill"></image>
 			</view>
 			<view class="comments-header__info">
 				<view class="title">
-					meHaotian
+					{{comments.author.author_name}}
 				</view>
-				<view class="">2021-06-20 11:11:11</view>
+				<view class="">{{comments.create_time}}</view>
 			</view>
 		</view>
 		<view class="comments-content">
 			<view class="">
-				uniapp 超级牛逼
+				{{comments.comment_content}}
 			</view>
 		</view>
 	</view>
@@ -21,10 +21,18 @@
 
 <script>
 	export default {
-		name:"comments-box",
+		name: "comments-box",
+		props: {
+			comments: {
+				type: Object,
+				default () {
+					return {}
+				}
+			}
+		},
 		data() {
 			return {
-				
+
 			};
 		}
 	}
@@ -33,19 +41,23 @@
 <style lang="scss">
 	.comments-box {
 		margin: 15px 0;
+
 		.comments-header {
 			display: flex;
+
 			.comments-header__logo {
 				flex-shrink: 0;
 				width: 30px;
 				height: 30px;
 				border-radius: 5px;
 				overflow: hidden;
+
 				image {
 					width: 100%;
 					height: 100%;
 				}
 			}
+
 			.comments-header__info {
 				display: flex;
 				flex-direction: column;
@@ -53,6 +65,7 @@
 				font-size: 12px;
 				color: #999999;
 				line-height: 1;
+
 				.title {
 					margin-bottom: 10px;
 					font-size: 14px;
@@ -60,6 +73,7 @@
 				}
 			}
 		}
+
 		.comments-content {
 			margin-top: 10px;
 			font-size: 14px;

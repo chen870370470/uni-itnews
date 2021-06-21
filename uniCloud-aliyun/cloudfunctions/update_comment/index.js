@@ -29,7 +29,7 @@ exports.main = async (event, context) => {
 		author: {
 			author_id: user._id,
 			author_name: user.author_name,
-			avator: user.avator,
+			avatar: user.avatar,
 			professional: user.professional // 作者的专业
 		},
 		// 回复字段
