@@ -129,6 +129,7 @@
 						title: '发布成功',
 						icon: 'none'
 					})
+					this.getComments()
 					this.close()
 
 				})
