@@ -13,7 +13,9 @@ exports.main = async (event, context) => {
 		// 评论内容
 		content,
 		// 评论id
-		comment_id = ''
+		comment_id = '',
+		reply_id = '', // 这是子回复id
+		is_reply = false
 	} = event
 
 	let user = await db.collection('user').doc(user_id).get()
@@ -24,7 +26,7 @@ exports.main = async (event, context) => {
 	const article = await db.collection('article').doc(article_id).get()
 	// 获取文章下的所有评论
 	const comments = article.data[0].comments
-	
+
 	let commentObj = {
 		// 评论id
 		comment_id: getID(5),
@@ -32,6 +34,7 @@ exports.main = async (event, context) => {
 		comment_content: content,
 		// 创建时间
 		create_time: new Date().getTime(),
+		is_reply: is_reply, // 区分主回复子回复
 		// 作者信息
 		author: {
 			author_id: user._id,
@@ -43,33 +46,39 @@ exports.main = async (event, context) => {
 		replys: []
 	}
 	// 评论文章
-	if(comment_id === ''){
+	if (comment_id === '') {
 		commentObj.replys = []
 		commentObj = dbCmd.unshift(commentObj)
 	} else {
 		// 回复对文章的评论
 		// 获取评论索引
 		let commentIndex = comments.findIndex(item => item.comment_id === comment_id)
-		// 获取作者信息
-		let commentAuthor = comments.find(item => item.comment_id === comment_id)
+		let commentAuthor = ''
+		if (is_reply) {
+			// 子回复
+			commentAuthor = comments[commentIndex].replys.find(item => item.comment_id === reply_id)
+		} else {
+			// 主回复
+			// 获取作者信息
+			commentAuthor = comments.find(item => item.comment_id === comment_id)
+		}
 		commentAuthor = commentAuthor.author.author_name
 		commentObj.to = commentAuthor
-		
 		// 更新回复信息
 		commentObj = {
-			[commentIndex] : {
-				replys:dbCmd.unshift(commentObj)
+			[commentIndex]: {
+				replys: dbCmd.unshift(commentObj)
 			}
 		}
 	}
 	await db.collection('article').doc(article_id).update({
-		comments:commentObj
+		comments: commentObj
 	})
 
 	//返回数据给客户端
 	return {
-		code:200,
-		msg:'数据更新成功'
+		code: 200,
+		msg: '数据更新成功'
 	}
 };
 
