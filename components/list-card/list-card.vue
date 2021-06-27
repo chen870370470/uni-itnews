@@ -92,7 +92,6 @@
 					thumbs_up_count: item.thumbs_up_count,
 					browse_count: item.browse_count
 				}
-				console.log('打开详情页面', params);
 				// 这里传参注意长度
 				uni.navigateTo({
 					url: '/pages/home-detail/home-detail?params=' + JSON.stringify(params)

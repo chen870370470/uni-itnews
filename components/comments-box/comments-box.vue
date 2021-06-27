@@ -5,17 +5,14 @@
 				<image :src="comments.author.avatar" mode="aspectFill"></image>
 			</view>
 			<view class="comments-header__info">
-				<view v-if="!comments.is_reply" class="title">
-					{{comments.author.author_name}}
-				</view>
-				<view else class="title">
-					{{comments.author.author_name}} <text class="reply-text">回复</text>{{comments.to}}
-				</view>
-				<view class="">{{comments.create_time}}</view>
+				<view v-if="!comments.is_reply" class="title">{{comments.author.author_name}}</view>
+				<view v-else class="title">{{comments.author.author_name}} <text
+						class="reply-text">回复</text>{{comments.to}}</view>
+				<view class="">{{comments.create_time | formatTime}}</view>
 			</view>
 		</view>
 		<view class="comments-content">
-			<view >
+			<view>
 				{{comments.comment_content}}
 			</view>
 			<view class="comments-info">
@@ -32,6 +29,9 @@
 
 <script>
 	import componentsBox from '@/components/comments-box/comments-box.vue'
+	import {
+		parseTime
+	} from '@/utils/index.js'
 	export default {
 		name: "comments-box",
 		props: {
@@ -41,9 +41,14 @@
 					return {}
 				}
 			},
-			reply:{
-				type:Boolean,
-				default:false
+			reply: {
+				type: Boolean,
+				default: false
+			}
+		},
+		filters: {
+			formatTime(time) {
+				return parseTime(time)
 			}
 		},
 		data() {
@@ -51,14 +56,14 @@
 
 			};
 		},
-		methods:{
-			commentReply (comment) {
+		methods: {
+			commentReply(comment) {
 				// 用于区分是主回复，还是子回复
-				if(comment.is_reply) {
+				if (comment.is_reply) {
 					comment.comments.reply_id = comment.comments.comment_id
 					comment.comments.comment_id = this.comments.comment_id
 				}
-				this.$emit('reply',comment)
+				this.$emit('reply', comment)
 			}
 		}
 	}
@@ -96,6 +101,7 @@
 					margin-bottom: 10px;
 					font-size: 14px;
 					color: #333333;
+
 					.reply-text {
 						margin: 0 10px;
 						font-weight: bold;
@@ -109,9 +115,11 @@
 			margin-top: 10px;
 			font-size: 14px;
 			color: #000000;
+
 			.comments-info {
 				margin-top: 15px;
 				display: flex;
+
 				.comments-button {
 					padding: 2px 10px;
 					font-size: 12px;
@@ -120,6 +128,7 @@
 					border: 1px #ccc solid;
 				}
 			}
+
 			.comments-reply {
 				display: flex;
 				margin: 15px 0;
