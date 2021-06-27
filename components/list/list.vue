@@ -45,6 +45,11 @@
 		// onLoad 在页面 ， created 在组件中
 		created() {
 			// tab还没有赋值
+			uni.$on('update_article', () => {
+				this.listCatchData = {}
+				this.load = {}
+				this.getList(this.activeIndex)
+			})
 		},
 		methods: {
 			loadmore() {
