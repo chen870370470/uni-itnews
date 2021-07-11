@@ -13,6 +13,10 @@
 				default () {
 					return {}
 				}
+			},
+			types:{
+				type:String,
+				default:''
 			}
 		},
 		data() {
@@ -46,6 +50,7 @@
 						title:this.item.is_like?'收藏成功':'消除收藏',
 						icon:'none'
 					})
+					uni.$emit('update_article',this.types)
 					// console.log(res);
 				}).catch(()=>{
 					uni.hideLoading()
