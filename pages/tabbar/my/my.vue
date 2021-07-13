@@ -29,7 +29,7 @@
 				</view>
 				<uni-icons type="arrowright" size="14" color="#666"></uni-icons>
 			</view>
-			<view class="my-content__list">
+			<view class="my-content__list" @click="openFeedback">
 				<view class="my-content__list-title">
 					<uni-icons class="icons" type="help" size="16" color="#666"></uni-icons>
 					<text>意见反馈</text>
@@ -45,7 +45,13 @@ export default {
 	data() {
 		return {}
 	},
-	methods: {}
+	methods: {
+		openFeedback(){
+			uni.navigateTo({
+				url:'/pages/feedback/feedback'
+			})
+		}
+	}
 }
 </script>
 
