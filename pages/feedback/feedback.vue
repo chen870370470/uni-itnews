@@ -4,14 +4,12 @@
 		<view class="feedback-content"><textarea class="feedback-textarea" value="" placeholder="请输入你要反馈的问题" /></view>
 		<view class="feedback-title">反馈图片</view>
 		<view class="feedback-image-box">
-			<view class="feedback-image-item">
-				<view class="close-icon"><uni-icons type="closeempty" size="18" color="#fff"></uni-icons></view>
-				<view class="image-box"><image src="../../static/logo.png" mode="aspectFill"></image></view>
+			<view class="feedback-image-item" v-for="(item, index) in imageList" :key="index">
+				<view class="close-icon" @click="del(index)"><uni-icons type="closeempty" size="18" color="#fff"></uni-icons></view>
+				<view class="image-box"><image :src="item.url" mode="aspectFill"></image></view>
 			</view>
-			<view class="feedback-image-item">
-				<view class="image-box">
-					<uni-icons type="plusempty" size="50" color="#eee"></uni-icons>
-				</view>
+			<view v-if="imageList.length < 5" class="feedback-image-item" @click="addImage">
+				<view class="image-box"><uni-icons type="plusempty" size="50" color="#eee"></uni-icons></view>
 			</view>
 		</view>
 	</view>
@@ -20,7 +18,33 @@
 <script>
 export default {
 	data() {
-		return {}
+		return {
+			imageList: []
+		}
+	},
+	methods: {
+		del(index){
+			this.imageList.splice(index,1)
+		},
+		addImage() {
+			const count = 5 - this.imageList.length
+			uni.chooseImage({
+				count: count,
+				success: res => {
+					const { tempFilePaths } = res
+					tempFilePaths.forEach((item, index) => {
+						// 处理h5多选的状况
+						if (index < count) {
+							this.imageList.push({
+								url: item
+							})
+						}
+					})
+					console.log(tempFilePaths)
+				}
+			})
+		},
+		
 	}
 }
 </script>
